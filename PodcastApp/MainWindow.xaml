@@ -7,45 +7,70 @@
         xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="PodcastApp.MainWindow"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="538.462" Loaded="Window_Loaded">
-    <Grid>
-        <ListView x:Name="UI_LV_Podcasts" HorizontalAlignment="Stretch" Margin="0,25,0,0" VerticalAlignment="Top">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <UniformGrid Columns="1" HorizontalAlignment="Stretch"/>
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ListView.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal" VerticalAlignment="Top" HorizontalAlignment="Stretch">
-                        <Image Width="50">
-                            <Image.Source>
-                                <!-- To save significant application memory, set the DecodePixelWidth or  
+    <Grid Margin="0,0,0,0">
+        <TabControl x:Name="tabControl" HorizontalAlignment="Stretch" Margin="0,0,0,0" VerticalAlignment="Stretch">
+            <TabItem Header="Podcasts">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="350"></ColumnDefinition>
+                        <ColumnDefinition Width="auto" />
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="35" />
+                        </Grid.RowDefinitions>
+                        <DockPanel>
+                            <ListView x:Name="UI_LV_Podcasts" Grid.Row="0" DockPanel.Dock="Top">
+                                <!--<ListView.ItemContainerStyle>
+                                    <Style TargetType="ListViewItem">
+                                        <Setter Property="VerticalContentAlignment" Value="Top"/>
+                                    </Style>
+                                </ListView.ItemContainerStyle>-->
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <UniformGrid Columns="1" HorizontalAlignment="Stretch" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <DockPanel Height="50"  VerticalAlignment="Top" HorizontalAlignment="Stretch">
+                                            <Image Width="50">
+                                                <Image.Source>
+                                                    <!-- To save significant application memory, set the DecodePixelWidth or  
                                   DecodePixelHeight of the BitmapImage value of the image source to the desired 
                                   height and width of the rendered image. If you don't do this, the application will 
                                   cache the image as though it were rendered as its normal size rather then just 
                                   the size that is displayed. -->
-                                                        <!-- Note: In order to preserve aspect ratio, only set either DecodePixelWidth
+                                                    <!-- Note: In order to preserve aspect ratio, only set either DecodePixelWidth
                                       or DecodePixelHeight but not both. -->
-                                <BitmapImage DecodePixelWidth="50"  
+                                                    <BitmapImage DecodePixelWidth="50"  
           UriSource="{Binding ImageScaledPath}" />
-                            </Image.Source>
-                        </Image>
-                        <StackPanel Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Stretch">
-                            <!--<Image Source="{Binding ImageData}" HorizontalAlignment="Left" VerticalAlignment="Stretch" Stretch="UniformToFill" />-->
-                            <!--<Image Source="E:\Reed Jones\Documents\Documents\GitHub\PodcastApp\PodcastApp\Resources\generic-podcast-image.jpg"-->
-                            <!--DecodePixelWidth="50"  HorizontalAlignment="Left" VerticalAlignment="Stretch" Stretch="UniformToFill" Height="50" Width="50"/>-->
-                            <TextBlock Text="{Binding Title}" HorizontalAlignment="Stretch"  FontSize="16" VerticalAlignment="Top" />
-                            <TextBlock Text="{Binding ShortDescription}" HorizontalAlignment="Stretch" FontSize="12" VerticalAlignment="Bottom" />
-                        </StackPanel>
+                                                </Image.Source>
+                                            </Image>
+                                            <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch">
+                                                <!--<Image Source="{Binding ImageData}" HorizontalAlignment="Left" VerticalAlignment="Stretch" Stretch="UniformToFill" />-->
+                                                <!--DecodePixelWidth="50"  HorizontalAlignment="Left" VerticalAlignment="Stretch" Stretch="UniformToFill" Height="50" Width="50"/>-->
+                                                <TextBlock Text="{Binding Title}" FontSize="16" VerticalAlignment="Top" />
+                                                <TextBlock Text="{Binding ShortDescription}" FontSize="12" VerticalAlignment="Bottom" />
+                                            </StackPanel>
+                                        </DockPanel>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </DockPanel>
+                        <Button Grid.Row="1" Content="Check for new episodes" Margin="0,5,0,5" Click="Button_Click"/>
+                    </Grid>
+                    <StackPanel Grid.Column="1">
+
                     </StackPanel>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-            <!--<ListView.View>
-                <GridView>
-                    <GridViewColumn/>
-                </GridView>
-            </ListView.View>-->
-        </ListView>
+                </Grid>
+                <!--<Grid Background="#FFE5E5E5"/>-->
+            </TabItem>
+            <TabItem Header="TabItem">
+                <Grid Background="#FFE5E5E5"/>
+            </TabItem>
+        </TabControl>
 
     </Grid>
 </Window>

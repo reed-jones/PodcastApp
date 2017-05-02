@@ -9,5 +9,6 @@ namespace PodcastApp
     internal static class Constants
     {
         public static string AppData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"/PodcastApp/";
+        public static string Resources = System.AppDomain.CurrentDomain.BaseDirectory + "../../Resources/";
     }
 }

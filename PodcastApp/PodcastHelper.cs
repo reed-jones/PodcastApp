@@ -12,8 +12,6 @@ namespace PodcastApp
     {
         internal static void DownloadImages(Podcast p)
         {
-            Console.WriteLine("Downloading Scaled:" + p.Title);
-
             // save base path in AppData/Roaming/PodcastApp
             string baseFilePath = Constants.AppData + "Podcasts/" + p.Title + @"/Images/";
             System.IO.FileInfo file = new System.IO.FileInfo(baseFilePath);

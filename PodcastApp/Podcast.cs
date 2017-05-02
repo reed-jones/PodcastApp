@@ -40,7 +40,8 @@ namespace PodcastApp
                 else if (File.Exists(imgFull))
                     return imgFull;
                 else
-                    return @"E:\Reed Jones\Documents\Documents\GitHub\PodcastApp\PodcastApp\Resources\generic-podcast-image.jpg";
+                    return Constants.Resources + "generic-podcast-image.jpg";
+
             }
         }
         public string ImageFullPath
@@ -57,7 +58,7 @@ namespace PodcastApp
                 else if (File.Exists(imgScaled))
                     return imgScaled;
                 else
-                    return @"E:\Reed Jones\Documents\Documents\GitHub\PodcastApp\PodcastApp\Resources\generic-podcast-image.jpg";
+                    return Constants.Resources + "generic-podcast-image.jpg";
             }
         }
         public string ShortDescription
