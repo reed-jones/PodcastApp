@@ -39,36 +39,31 @@ namespace PodcastApp
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            RefreshList();
+        }
+
+        private void RefreshList()
+        {
+
             // clear list if needed
             UI_LV_Podcasts.Items.Clear();
-            //string podList = TopList(5);
-            string podList = File.ReadAllText(@"E:\Reed Jones\Documents\Documents\GitHub\PodcastApp\PodcastApp\Resources\top10.json");
+            string podList = Gpodder.TopList(25);
+            //string podList = File.ReadAllText(Constants.Resources + "top10.json");
 
             pl = JsonConvert.DeserializeObject<List<Podcast>>(podList);
             pl.ToList().ForEach(p =>
             {
                 // ensure AppData path
-                
-                PodcastHelper.DownloadImages(p);
+
+                //PodcastHelper.DownloadImages(p);
             });
 
             UI_LV_Podcasts.ItemsSource = pl;
-        }
-        public string TopList(int number)
-        {
-
-            string url = "https://gpodder.net/toplist/" + number + ".json";
-
-
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-            Stream stream = response.GetResponseStream();
-            using (StreamReader reader = new StreamReader(stream, Encoding.UTF8))
-            {
-                return reader.ReadToEnd();
-                //return JsonConvert.SerializeObject(reader.ReadToEnd(), Formatting.Indented);
-                //JsonConvert.DeserializeObject<Podcast>(reader.ReadToEnd());
-            }
         }
     }
 }
