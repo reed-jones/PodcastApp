@@ -10,5 +10,7 @@ namespace PodcastApp
     {
         public static string AppData = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + @"/PodcastApp/";
         public static string Resources = System.AppDomain.CurrentDomain.BaseDirectory + "../../Resources/";
+        public static string SQLiteConnection = "Filename=PodcastAppSqlite.db";
+        public static string UserAgent = "new .Net podcast client";
     }
 }

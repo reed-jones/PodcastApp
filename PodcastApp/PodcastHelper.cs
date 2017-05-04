@@ -17,41 +17,47 @@ namespace PodcastApp
             System.IO.FileInfo file = new System.IO.FileInfo(baseFilePath);
             file.Directory.Create();
 
-            //GetImagePaths(p.Scaled_logo_url, baseFilePath + "Scaled.jpg");
+            if(!File.Exists(baseFilePath + "Scaled.jpg"))
+                GetImagePaths(p.Scaled_logo_url, baseFilePath + "Scaled.jpg");
 
-            GetImagePaths(p.Logo_url, baseFilePath + "Full.jpg");
-
-
+            if (!File.Exists(baseFilePath + "Full.jpg"))
+                GetImagePaths(p.Logo_url, baseFilePath + "Full.jpg");
         }
-        public static void GetImagePaths(string url, string filename)
+        private static void GetImagePaths(string url, string filename)
         {
+            if (url == null) return;
+            string contentType = url.Substring(0,19).Contains("gpodder.net") ? "text/plain" : "image";
             try
             {
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                request.UserAgent = Constants.UserAgent;
                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-
                 // Check that the remote file was found. The ContentType
                 // check is performed since a request for a non-existent
                 // image file might be redirected to a 404-page, which would
                 // yield the StatusCode "OK", even though the image was not
                 // found.
+                Console.WriteLine(response.StatusCode + " : " + response.ContentType);
                 if ((response.StatusCode == HttpStatusCode.OK ||
                     response.StatusCode == HttpStatusCode.Moved ||
                     response.StatusCode == HttpStatusCode.Redirect) &&
-                    response.ContentType.StartsWith("image", StringComparison.OrdinalIgnoreCase))
+                    response.ContentType.StartsWith(contentType, StringComparison.OrdinalIgnoreCase))
                 {
 
                     // if the remote file was found, download it
                     using (Stream inputStream = response.GetResponseStream())
-                    using (Stream outputStream = File.OpenWrite(filename))
                     {
-                        byte[] buffer = new byte[4096];
-                        int bytesRead;
-                        do
+                        using (Stream outputStream = File.OpenWrite(filename))
                         {
-                            bytesRead = inputStream.Read(buffer, 0, buffer.Length);
-                            outputStream.Write(buffer, 0, bytesRead);
-                        } while (bytesRead != 0);
+                            byte[] buffer = new byte[4096];
+                            int bytesRead;
+                            do
+                            {
+                                bytesRead = inputStream.Read(buffer, 0, buffer.Length);
+                                outputStream.Write(buffer, 0, bytesRead);
+                            } while (bytesRead != 0);
+                            Console.WriteLine("Downloaded Image: " + filename);
+                        }
                     }
                 }
             }

@@ -13,18 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Net;
+using System.Threading;
 using System.IO;
 using Newtonsoft.Json;
+using Microsoft.Data.Sqlite;
+using Microsoft.Data.Sqlite.Internal;
 
 namespace PodcastApp
 {
-    public class Account
-    {
-        public string Email { get; set; }
-        public bool Active { get; set; }
-        public DateTime CreatedDate { get; set; }
-        public IList<string> Roles { get; set; }
-    }
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
@@ -35,35 +31,42 @@ namespace PodcastApp
         public MainWindow()
         {
             InitializeComponent();
-        }
+            Database.Initialize();
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-
+            //Database.Load();
+            pl = Database.GetPodcasts();
+            pl.ForEach(a => UI_LV_Podcasts.Items.Add(a));
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            RefreshList();
+            //RefreshList(gpoddernet.TopList());
+            RefreshList(gpoddernet.TopList(25));
+            // debugging
+            //RefreshList(File.ReadAllText(Constants.Resources + "top10.json"));
         }
 
-        private void RefreshList()
+        private void RefreshList(string source)
         {
+     
+                pl = JsonConvert.DeserializeObject<List<Podcast>>(source);
 
-            // clear list if needed
-            UI_LV_Podcasts.Items.Clear();
-            string podList = Gpodder.TopList(25);
-            //string podList = File.ReadAllText(Constants.Resources + "top10.json");
+            int count = 0;
+            List<Podcast> temp = new List<Podcast>();
 
-            pl = JsonConvert.DeserializeObject<List<Podcast>>(podList);
-            pl.ToList().ForEach(p =>
+                temp = new List<Podcast>(pl);
+
+            foreach (Podcast p in temp)
             {
-                // ensure AppData path
-
-                //PodcastHelper.DownloadImages(p);
-            });
-
-            UI_LV_Podcasts.ItemsSource = pl;
+                //if (pl.Contains(p)) continue;
+                // no need to hammer image downloading servers during development
+                PodcastHelper.DownloadImages(p);
+                // UI_LV_Podcasts.Items.Add(p);
+                Console.WriteLine(count + " Images Downloaded");
+                UI_LV_Podcasts.Items.Add(p);
+                Database.AddPodcast(p);
+            };
+            Console.WriteLine("All Images Downloaded");
         }
     }
 }

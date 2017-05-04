@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:PodcastApp"
         xmlns:System="clr-namespace:System;assembly=mscorlib" x:Class="PodcastApp.MainWindow"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="538.462" Loaded="Window_Loaded">
+        Title="MainWindow" Height="350" Width="538.462">
     <Grid Margin="0,0,0,0">
         <TabControl x:Name="tabControl" HorizontalAlignment="Stretch" Margin="0,0,0,0" VerticalAlignment="Stretch">
             <TabItem Header="Podcasts">
